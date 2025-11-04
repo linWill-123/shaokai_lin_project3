@@ -1,0 +1,98 @@
+/* Sudoku Game Styles */
+.game-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.game-header {
+  margin-bottom: 3rem;
+}
+
+.game-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.game-board {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.sudoku-grid-6x6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  background-color: #000;
+  border: 2px solid #717171;
+  border-radius: 4px;
+  max-width: 360px;
+  aspect-ratio: 1;
+}
+
+.sudoku-grid-9x9 {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0;
+  background-color: #000;
+  border: 2px solid #717171;
+  border-radius: 4px;
+  max-width: 360px;
+  aspect-ratio: 1;
+}
+
+.sudoku-cell {
+  border: 1px solid #cfd2d5;
+  background-color: white;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #2c3e50;
+  transition: all 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sudoku-cell:focus {
+  outline: 2px solid #16a34a;
+  outline-offset: -2px;
+  background-color: #e4e6e5;
+  position: relative;
+}
+
+.sudoku-cell.given {
+  background-color: rgb(216, 216, 216);
+  color: #161b28;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.sudoku-cell.given:focus {
+  outline: 2px solid #374051;
+  background-color: #f3f4f6;
+}
+
+.sudoku-cell.invalid {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+/* Game Controls */
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.control-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}

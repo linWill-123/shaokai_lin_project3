@@ -1,0 +1,72 @@
+/* Button Styles */
+.game-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  color: #374151;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.game-btn:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.game-btn.primary {
+  background-color: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+.game-btn.primary:hover {
+  background-color: #15803d;
+  border-color: #15803d;
+}
+
+.game-btn.secondary:hover {
+  background-color: #c2cad8;
+}
+
+/* Difficulty Buttons */
+.easy-btn {
+  background-color: #86eaa4;
+  color: #ffffff;
+}
+
+.easy-btn:hover {
+  background-color: #63b34d;
+  color: white;
+}
+
+.medium-btn {
+  background-color: #f0a017;
+  color: #ffffff;
+}
+
+.medium-btn:hover {
+  background-color: #cc7b08;
+  color: white;
+}
+
+.hard-btn {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.hard-btn:hover {
+  background-color: #cb6363;
+  color: white;
+}
+
+.difficulty-badge {
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

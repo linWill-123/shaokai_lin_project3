@@ -9,6 +9,14 @@ body {
   background-color: #f5f7fa;
   color: #333;
   line-height: 1.6;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 /* Navigation */
@@ -77,204 +85,7 @@ body {
   margin: 0 auto;
 }
 
-.difficulty-badge {
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Sudoku Grid */
-.game-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.game-header {
-  margin-bottom: 3rem;
-}
-
-.game-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-
-.game-board {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.sudoku-grid-6x6 {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0;
-  background-color: #000;
-  border: 2px solid #717171;
-  border-radius: 4px;
-  max-width: 360px;
-  aspect-ratio: 1;
-}
-
-.sudoku-grid-9x9 {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 0;
-  background-color: #000;
-  border: 2px solid #717171;
-  border-radius: 4px;
-  max-width: 360px;
-  aspect-ratio: 1;
-}
-
-.sudoku-cell {
-  border: 1px solid #cfd2d5;
-  background-color: white;
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: #2c3e50;
-  transition: all 0.1s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sudoku-cell:focus {
-  outline: 2px solid #16a34a;
-  outline-offset: -2px;
-  background-color: #e4e6e5;
-  position: relative;
-}
-
-.sudoku-cell.given {
-  background-color: rgb(216, 216, 216);
-  color: #161b28;
-  font-weight: 600;
-  cursor: not-allowed;
-}
-
-.sudoku-cell.given:focus {
-  outline: 2px solid #374051;
-  background-color: #f3f4f6;
-}
-
-/* Game Controls */
-.game-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.control-group {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.game-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  background-color: white;
-  color: #374151;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.game-btn:hover {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
-}
-
-.game-btn.primary {
-  background-color: #16a34a;
-  color: white;
-  border-color: #16a34a;
-}
-
-.game-btn.primary:hover {
-  background-color: #15803d;
-  border-color: #15803d;
-}
-
-.game-btn.secondary:hover {
-  background-color: #c2cad8;
-}
-
-/* Difficulty Buttons */
-.easy-btn {
-  background-color: #86eaa4;
-  color: #ffffff;
-}
-
-.easy-btn:hover {
-  background-color: #63b34d;
-  color: white;
-}
-
-.medium-btn {
-  background-color: #f0a017;
-  color: #ffffff;
-}
-
-.medium-btn:hover {
-  background-color: #cc7b08;
-  color: white;
-}
-
-.hard-btn {
-  background-color: #fef2f2;
-  color: #dc2626;
-}
-
-.hard-btn:hover {
-  background-color: #cb6363;
-  color: white;
-}
-
-.credits-section {
-  background: linear-gradient(135deg, #eaeff3 0%, #b2d0e1 100%);
-  color: white;
-  padding: 3rem;
-  border-radius: 12px;
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.contact-links {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.contact-link {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  text-decoration: none;
-  border-radius: 50px;
-  font-weight: 400;
-}
-
-.contact-link:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-3px);
-}
-
-/* Add toggle headers */
+/* Mobile Navigation */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -284,7 +95,7 @@ body {
 .nav-toggle span {
   width: 25px;
   height: 3px;
-  background-color: #ecf0f1;
+  background-color: #2c3e50;
   margin: 3px 0;
   transition: 0.3s;
 }
@@ -298,5 +109,13 @@ body {
     display: none;
     text-align: center;
     transition: 0.3s;
+  }
+
+  .nav-container {
+    padding: 0 1rem;
+  }
+
+  .main-content {
+    padding: 1rem;
   }
 }

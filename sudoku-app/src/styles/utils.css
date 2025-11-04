@@ -1,0 +1,32 @@
+/* Component Styles */
+.credits-section {
+  background: linear-gradient(135deg, #eaeff3 0%, #b2d0e1 100%);
+  color: white;
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.contact-link {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+.contact-link:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+}
