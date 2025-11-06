@@ -206,3 +206,6 @@ function easySudoku() {
 
   return board;
 }
+
+// Export functions for use in React components
+export { hardSudoku, easySudoku, isSafe };
