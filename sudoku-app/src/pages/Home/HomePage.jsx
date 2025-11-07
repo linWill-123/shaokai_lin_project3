@@ -25,9 +25,6 @@ export const HomePage = () => {
             <Link to={ROUTES.NORMAL_GAME} className="difficulty-btn medium-btn">
               Normal
             </Link>
-            <Link to={ROUTES.NORMAL_GAME} className="difficulty-btn hard-btn">
-              Hard
-            </Link>
           </div>
           <div className="auth-section">
             <div className="auth-links">
