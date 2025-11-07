@@ -17,6 +17,13 @@
   box-sizing: border-box;
 }
 
+.sudoku-cell.game-won {
+  background-color: #dcfce7;
+  border-color: #16a34a;
+  color: #166534;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .sudoku-cell {
     font-size: 1.1rem;
