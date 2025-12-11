@@ -38,7 +38,42 @@ const SudokuGame = ({
     }
   }, [mode, gameId]);
 
+  // Handle game completion - update database and submit high score
+  useEffect(() => {
+    if (gameWon && gameId && !initialCompleted && board) {
+      handleGameCompletion();
+    }
+  }, [gameWon, gameId, board]);
+
+  const handleGameCompletion = async () => {
+    if (!board) return;
+    
+    try {
+      // Update game in database as completed
+      await sudokuApi.updateGame(gameId, {
+        isCompleted: true,
+        completionTime: timer,
+        board: board
+      });
+
+      // Submit high score
+      const username = localStorage.getItem('username') || 'Guest';
+      const result = await highScoreApi.submitHighScore(gameId, username, timer);
+      
+      if (result.isNewRecord) {
+        console.log('New high score!', result);
+      }
+    } catch (err) {
+      console.error('Error saving game completion:', err);
+    }
+  };
+
   const loadExistingGame = () => {
+    if (!initialBoard || !Array.isArray(initialBoard)) {
+      console.error('Invalid initialBoard:', initialBoard);
+      return;
+    }
+
     let gameSize, subH, subW;
 
     if (mode === "easy") {
@@ -56,7 +91,7 @@ const SudokuGame = ({
     
     // If game is completed, show the solution
     let currentBoard;
-    if (initialCompleted && solution) {
+    if (initialCompleted && solution && Array.isArray(solution)) {
       currentBoard = solution.map((row) => [...row]);
     } else {
       currentBoard = initialBoard.map((row) => [...row]);

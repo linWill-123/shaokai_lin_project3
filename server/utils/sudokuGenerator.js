@@ -164,11 +164,14 @@ function commonSudokuBuilder({ size, subH, subW, targetFilledCells }) {
 
   // Fill it with a valid full Sudoku board
   board = fillBoard(board, subH, subW);
+  
+  // Store complete solution BEFORE carving holes
+  const solution = board.map(row => [...row]);
 
   // Carve holes to match difficulty
   board = carveHoles(board, targetFilledCells);
 
-  return board;
+  return { board, solution };
 }
 
 // ---------------------- REQUIRED FUNCTIONS ---------------------- //
