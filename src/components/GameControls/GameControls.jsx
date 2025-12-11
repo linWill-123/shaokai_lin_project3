@@ -15,15 +15,17 @@ const GameControls = ({ onNewGame, onReset }) => {
           Reset
         </button>
       </div>
-      <div className="control-group">
-        <button
-          className="game-btn primary"
-          onClick={onNewGame}
-          disabled={isPaused}
-        >
-          New Game
-        </button>
-      </div>
+      {onNewGame && (
+        <div className="control-group">
+          <button
+            className="game-btn primary"
+            onClick={onNewGame}
+            disabled={isPaused}
+          >
+            New Game
+          </button>
+        </div>
+      )}
     </div>
   );
 };
