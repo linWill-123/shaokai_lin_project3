@@ -4,8 +4,18 @@ import SudokuCell from "../SudokuCell/SudokuCell";
 import { easySudoku, hardSudoku } from "../../utils/sudoku_generator";
 import "./SudokuGame.css";
 import GameControls from "../GameControls/GameControls";
+import { sudokuApi, highScoreApi } from "../../services/api";
 
-const SudokuGame = ({ mode, title, difficulty }) => {
+const SudokuGame = ({ 
+  mode, 
+  title, 
+  difficulty, 
+  gameId = null, 
+  initialBoard = null, 
+  solution = null,
+  isCompleted: initialCompleted = false,
+  completionTime: initialCompletionTime = null,
+}) => {
   const {
     board,
     timer,
@@ -19,8 +29,41 @@ const SudokuGame = ({ mode, title, difficulty }) => {
 
   // initialize the game when component mounts or mode changes
   useEffect(() => {
-    generateNewGame();
-  }, [mode]);
+    if (gameId && initialBoard && solution) {
+      // Load existing game from database
+      loadExistingGame();
+    } else {
+      // Generate new game (for quick play)
+      generateNewGame();
+    }
+  }, [mode, gameId]);
+
+  const loadExistingGame = () => {
+    let gameSize, subH, subW;
+
+    if (mode === "easy") {
+      gameSize = 6;
+      subH = 2;
+      subW = 3;
+    } else {
+      gameSize = 9;
+      subH = 3;
+      subW = 3;
+    }
+
+    // Use initialBoard as the original board (starting state)
+    const newOriginalBoard = initialBoard.map((row) => [...row]);
+    
+    // If game is completed, show the solution
+    let currentBoard;
+    if (initialCompleted && solution) {
+      currentBoard = solution.map((row) => [...row]);
+    } else {
+      currentBoard = initialBoard.map((row) => [...row]);
+    }
+
+    setBoard(currentBoard, newOriginalBoard, gameSize, subH, subW);
+  };
 
   const generateNewGame = () => {
     let newBoard, newOriginalBoard;
@@ -48,7 +91,10 @@ const SudokuGame = ({ mode, title, difficulty }) => {
   };
 
   const handleNewGame = () => {
-    generateNewGame();
+    // Only allow new game if it's a quick play (no gameId)
+    if (!gameId) {
+      generateNewGame();
+    }
   };
 
   const handleReset = () => {
@@ -101,6 +147,23 @@ const SudokuGame = ({ mode, title, difficulty }) => {
       {gameWon && (
         <div className="victory-message">
           Congratulations! You completed the puzzle in {formatTime(timer)}!
+          {initialCompleted && initialCompletionTime && (
+            <div style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+              Previously completed in {formatTime(initialCompletionTime)}
+            </div>
+          )}
+        </div>
+      )}
+
+      {initialCompleted && !gameWon && (
+        <div className="completed-notice" style={{ 
+          background: '#e8f4f8', 
+          padding: '1rem', 
+          marginBottom: '1rem', 
+          borderRadius: '8px',
+          textAlign: 'center'
+        }}>
+          This game was previously completed in {formatTime(initialCompletionTime || 0)}. The solution is displayed below.
         </div>
       )}
 
@@ -113,7 +176,7 @@ const SudokuGame = ({ mode, title, difficulty }) => {
         </div>
       )}
 
-      {!isPaused && !gameWon && (
+      {!isPaused && !gameWon && !initialCompleted && (
         <div>
           <div
             className="game-board"
@@ -133,7 +196,30 @@ const SudokuGame = ({ mode, title, difficulty }) => {
               )}
             </div>
           </div>
-          <GameControls onNewGame={handleNewGame} onReset={handleReset} />
+          <GameControls 
+            onNewGame={gameId ? null : handleNewGame} 
+            onReset={handleReset} 
+          />
+        </div>
+      )}
+
+      {initialCompleted && (
+        <div>
+          <div className="game-board">
+            <div className={gridClass}>
+              {board.map((row, rowIndex) =>
+                row.map((cell, colIndex) => (
+                  <SudokuCell
+                    key={`${rowIndex}-${colIndex}`}
+                    row={rowIndex}
+                    col={colIndex}
+                    value={cell}
+                    maxValue={maxValue}
+                  />
+                ))
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
