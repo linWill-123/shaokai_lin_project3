@@ -62,9 +62,9 @@ export const HighScoresPage = () => {
       {loading && <div className="loading-message">Loading high scores...</div>}
       {error && <div className="error-message">{error}</div>}
 
-      <div className="leaderboard-section">
+      {!loading && !error && <div className="leaderboard-section">
         <div className="leaderboard">
-          {!loading && !error && highScores.length === 0 && (
+          { highScores.length === 0 && (
             <div className="no-scores-message" style={{ textAlign: 'center', padding: '2rem' }}>
               No high scores yet. Complete a game to set a record!
             </div>
@@ -98,7 +98,7 @@ export const HighScoresPage = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 };
