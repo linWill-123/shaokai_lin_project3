@@ -42,3 +42,9 @@ In another terminal start frontend by:
 ```bash
 npm start
 ```
+
+### 3. Debugging
+To check if server's running, you can run:
+```bash
+curl -s http://localhost:5000/api/health
+```
