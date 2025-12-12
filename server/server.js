@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 // Import routes
 const sudokuRoutes = require('./routes/sudoku');
 const highscoreRoutes = require('./routes/highscore');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/sudoku', sudokuRoutes);
 app.use('/api/highscore', highscoreRoutes);
+app.use('/api/auth', authRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
