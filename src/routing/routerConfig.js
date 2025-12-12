@@ -21,14 +21,4 @@ export const routeConfig = [
     name: "High Scores",
     showInNav: true,
   },
-  {
-    path: ROUTES.LOGIN,
-    name: "Login",
-    showInNav: true,
-  },
-  {
-    path: ROUTES.REGISTER,
-    name: "Register",
-    showInNav: true,
-  },
 ];
