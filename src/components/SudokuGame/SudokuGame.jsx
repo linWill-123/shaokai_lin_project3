@@ -5,6 +5,7 @@ import { easySudoku, hardSudoku } from "../../utils/sudoku_generator";
 import "./SudokuGame.css";
 import GameControls from "../GameControls/GameControls";
 import { sudokuApi, highScoreApi } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 const SudokuGame = ({ 
   mode, 
@@ -26,6 +27,8 @@ const SudokuGame = ({
     resetGame,
     formatTime,
   } = useSudoku();
+
+  const { user } = useAuth();
 
   // initialize the game when component mounts or mode changes
   useEffect(() => {
@@ -57,7 +60,7 @@ const SudokuGame = ({
       });
 
       // Submit high score
-      const username = localStorage.getItem('username') || 'Guest';
+      const username = user?.username || 'Guest';
       const result = await highScoreApi.submitHighScore(gameId, username, timer);
       
       if (result.isNewRecord) {

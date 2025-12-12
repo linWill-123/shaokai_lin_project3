@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SelectionPage.css";
-import { ROUTES } from "../../constants/routes";
 import { sudokuApi } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export const SelectionPage = () => {
   const [activeTab, setActiveTab] = useState("All Games");
@@ -13,6 +13,7 @@ export const SelectionPage = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
   const [gameName, setGameName] = useState('');
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     loadGames();
@@ -45,7 +46,7 @@ export const SelectionPage = () => {
     }
 
     try {
-      const username = localStorage.getItem('username') || 'Guest';
+      const username = user?.username || 'Guest';
       const result = await sudokuApi.createGame(selectedDifficulty, username, gameName.trim());
       setShowNameModal(false);
       navigate(`/game/${result.gameId}`);
