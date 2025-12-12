@@ -1,25 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import { ROUTES } from "../../constants/routes";
+import { useAuth } from "../../context/AuthContext";
 
 export const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log("Login attempted:", formData);
+    setError("");
+    setLoading(true);
+
+    try {
+      await login(formData.username, formData.password);
+      navigate(ROUTES.SELECTION); // Redirect to game selection after login
+    } catch (err) {
+      setError(err.message || "Failed to login. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,6 +46,8 @@ export const LoginPage = () => {
           <p className="login-subtitle">Begin Sudoku Now!</p>
 
           <form className="input-label-align-left" onSubmit={handleSubmit}>
+            {error && <div className="error-message">{error}</div>}
+            
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -39,6 +57,7 @@ export const LoginPage = () => {
                 value={formData.username}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -51,6 +70,7 @@ export const LoginPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -61,8 +81,12 @@ export const LoginPage = () => {
             </div>
 
             <div className="btn-container">
-              <button className="btn btn-primary sign-in-btn" type="submit">
-                Sign In
+              <button 
+                className="btn btn-primary sign-in-btn" 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Signing in..." : "Sign In"}
               </button>
             </div>
           </form>

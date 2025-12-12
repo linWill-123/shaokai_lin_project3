@@ -30,6 +30,13 @@
   margin-bottom: 1rem;
 }
 
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 12px;
+  font-size: 0.9rem;
+}
+
 .input-label-align-left {
   text-align: left;
 }

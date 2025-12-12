@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./RegisterPage.css";
 import { ROUTES } from "../../constants/routes";
+import { useAuth } from "../../context/AuthContext";
 
 export const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,22 +11,61 @@ export const RegisterPage = () => {
     password: "",
     verifyPassword: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e) => {
+  const validatePassword = (password) => {
+    const minLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    
+    if (!minLength) return "Password must be at least 8 characters long";
+    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
+    if (!hasLowerCase) return "Password must contain at least one lowercase letter";
+    if (!hasNumber) return "Password must contain at least one number";
+    
+    return null;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement registration logic
+    setError("");
+
+    // Validate passwords match
     if (formData.password !== formData.verifyPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
-    console.log("Registration attempted:", formData);
+
+    // Validate password requirements
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await register(formData.username, formData.email, formData.password);
+      navigate(ROUTES.SELECTION); // Redirect to game selection after registration
+    } catch (err) {
+      setError(err.message || "Failed to create account. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,6 +76,8 @@ export const RegisterPage = () => {
           <p className="login-subtitle">Join Kai's Sudoku Community!</p>
 
           <form className="input-label-align-left" onSubmit={handleSubmit}>
+            {error && <div className="error-message">{error}</div>}
+            
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -45,6 +87,7 @@ export const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -57,6 +100,7 @@ export const RegisterPage = () => {
                 value={formData.username}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -69,6 +113,7 @@ export const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -81,6 +126,7 @@ export const RegisterPage = () => {
                 value={formData.verifyPassword}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -94,8 +140,12 @@ export const RegisterPage = () => {
             </div>
 
             <div className="btn-container">
-              <button className="btn btn-primary sign-in-btn" type="submit">
-                Create Account
+              <button 
+                className="btn btn-primary sign-in-btn" 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
             </div>
           </form>

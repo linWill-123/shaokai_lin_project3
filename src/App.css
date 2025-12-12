@@ -81,6 +81,34 @@
   text-align: center;
 }
 
+
+/* Navbar user section styles */
+.nav-user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
+}
+
+.nav-username {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.nav-logout-btn {
+  padding: 6px 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+
+
 @media (max-width: 768px) {
   .hero-section {
     flex-direction: column;
