@@ -83,6 +83,15 @@ export const highScoreApi = {
     if (!response.ok) throw new Error('Failed to submit high score');
     return response.json();
   },
+
+  getGamesByCompletion: async (difficulty = null) => {
+    const url = difficulty 
+      ? `${API_BASE_URL}/highscore/games/by-completion?difficulty=${difficulty}`
+      : `${API_BASE_URL}/highscore/games/by-completion`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch game statistics');
+    return response.json();
+  },
 };
 
 export const authApi = {

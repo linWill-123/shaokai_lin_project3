@@ -3,25 +3,25 @@ import { highScoreApi } from "../../services/api";
 import "./HighScoresPage.css";
 
 export const HighScoresPage = () => {
-  const [highScores, setHighScores] = useState([]);
+  const [gameStats, setGameStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
-    loadHighScores();
+    loadGameStats();
   }, [filter]);
 
-  const loadHighScores = async () => {
+  const loadGameStats = async () => {
     try {
       setLoading(true);
       const difficulty = filter === 'ALL' ? null : filter;
-      const data = await highScoreApi.getAllHighScores(difficulty, 100);
-      setHighScores(data);
+      const data = await highScoreApi.getGamesByCompletion(difficulty);
+      setGameStats(data);
       setError(null);
     } catch (err) {
-      console.error('Error loading high scores:', err);
-      setError('Failed to load high scores. Please try again.');
+      console.error('Error loading game stats:', err);
+      setError('Failed to load game statistics. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export const HighScoresPage = () => {
   return (
     <div className="page-container">
       <h1 className="page-title">High Scores</h1>
-      <p className="page-subtitle">Best times for completed games</p>
+      <p className="page-subtitle">Games ordered by number of completions</p>
 
       <div className="filter-tabs" style={{ marginBottom: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         <button 
@@ -59,18 +59,18 @@ export const HighScoresPage = () => {
         </button>
       </div>
 
-      {loading && <div className="loading-message">Loading high scores...</div>}
+      {loading && <div className="loading-message">Loading game statistics...</div>}
       {error && <div className="error-message">{error}</div>}
 
       {!loading && !error && <div className="leaderboard-section">
         <div className="leaderboard">
-          { highScores.length === 0 && (
+          { gameStats.length === 0 && (
             <div className="no-scores-message" style={{ textAlign: 'center', padding: '2rem' }}>
-              No high scores yet. Complete a game to set a record!
+              No completed games yet. Finish a game to appear here!
             </div>
           )}
-          {!loading && highScores.map((score, index) => (
-            <div key={score._id} className="leaderboard-item">
+          {gameStats.map((stat, index) => (
+            <div key={stat.gameId} className="leaderboard-item">
               <div className="rank">
                 <span className="rank-number">{index + 1}</span>
               </div>
@@ -90,9 +90,9 @@ export const HighScoresPage = () => {
                 />
               </svg>
               <div className="player-info">
-                <span className="username">{score.username}</span>
+                <span className="username">{stat.gameName}</span>
                 <span className="stats">
-                  {score.gameId?.name || 'Unknown Game'} • {score.difficulty} • {formatTime(score.time)}
+                  {stat.difficulty} • {stat.completionCount} {stat.completionCount === 1 ? 'completion' : 'completions'} • Best: {formatTime(stat.bestTime)} by {stat.bestPlayer}
                 </span>
               </div>
             </div>

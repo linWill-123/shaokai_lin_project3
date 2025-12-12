@@ -25,6 +25,57 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/highscore/games/by-completion - Get games ordered by completion count
+router.get('/games/by-completion', async (req, res) => {
+  try {
+    const { difficulty } = req.query;
+    
+    // Aggregate high scores by gameId to count completions
+    const matchStage = difficulty && ['EASY', 'NORMAL'].includes(difficulty.toUpperCase())
+      ? { difficulty: difficulty.toUpperCase() }
+      : {};
+
+    const gameStats = await HighScore.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: '$gameId',
+          completionCount: { $sum: 1 },
+          bestTime: { $min: '$time' },
+          bestPlayer: { $first: '$username' },
+          difficulty: { $first: '$difficulty' }
+        }
+      },
+      { $match: { completionCount: { $gt: 0 } } }, // Only games with at least 1 completion
+      { $sort: { completionCount: -1, bestTime: 1 } }, // Sort by completion count desc, then best time
+      {
+        $lookup: {
+          from: 'games',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'gameInfo'
+        }
+      },
+      { $unwind: '$gameInfo' },
+      {
+        $project: {
+          gameId: '$_id',
+          gameName: '$gameInfo.name',
+          difficulty: 1,
+          completionCount: 1,
+          bestTime: 1,
+          bestPlayer: 1
+        }
+      }
+    ]);
+    
+    res.json(gameStats);
+  } catch (error) {
+    console.error('Error fetching game stats:', error);
+    res.status(500).json({ error: 'Failed to fetch game statistics' });
+  }
+});
+
 // GET /api/highscore/:gameId - Get high score for specific game
 router.get('/:gameId', async (req, res) => {
   try {
